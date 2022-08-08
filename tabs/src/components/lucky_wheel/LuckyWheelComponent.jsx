@@ -157,6 +157,10 @@ function LuckyWheelComponent() {
 
     const [listResult, setListResult] = ([]);
 
+    const [tmpVariable, setTmpVariable] = useState(1);
+
+    const [randomInd, setRandomIndex] = useState();
+
     function getColor(index) {
         const listColor = [
             "aqua",
@@ -299,7 +303,7 @@ function LuckyWheelComponent() {
         }
     }
 
-    function randomIndex(listCheckedItem) {
+    function spin() {
         let randNum = 0;
         let listCheckedItemLength = listCheckedItem.length;
         let rand = Math.floor(Math.random() * listCheckedItemLength);
@@ -315,33 +319,36 @@ function LuckyWheelComponent() {
                 randNum = randomIndex(listCheckedItem);
             }
         }
+        setRandomIndex(randNum);
+        console.log(randomInd);
+
+        //lúc gọi tạo randomIndex đang bị lặp rất nhiều lần, phải kiếm tra lại
+    };
+
+    function randomIndex() {
+        let randNum = 0;
+        let listCheckedItemLength = listCheckedItem.length;
+        let rand = Math.floor(Math.random() * listCheckedItemLength);
+        if (rand !== 0) {
+            randNum = rand;
+        }
+
+        //let listResult = []
+        if (listResult !== undefined) {
+            let pos = listResult.findIndex(data => data.name === listCheckedItem[randNum].name);
+            if (pos !== -1) {
+                console.log("trùng");
+                randNum = randomIndex(listCheckedItem);
+            }
+        }
+        setRandomIndex(randNum);
         return randNum;
     };
 
-    function spin() {
-        let randomIndex = randomIndex();
-        // var btn = document.getElementById("reset");
-        // if (btn != null) {
-        //     btn.disabled = true;
-        // }
-        var chances = randomIndex;
-        var rotate_wheel = fnGetPrize([randomIndex, chances]);
-        setRotate({ rotate: "rotate(" + rotate_wheel + "deg)" });
-        //var container = document.getElementById("div-wheel-container");
-        //console.log(container);
-        //setTransform({ rotate: "rotate(" + rotate_wheel + "deg)" });
-        //container.style['transform'] = "rotate(" + rotate_wheel + "deg)";
-        // setTimeout(() => {
-        //     //var listResult = listResult;
-        //     if (listResult !== undefined) {
-        //         var pos_result = listResult.findIndex(i => i.name === listCheckedItem[randomIndex].name);
-        //         if (pos_result < 0) {
-        //             listResult.push(listCheckedItem[randomIndex]);
-        //         }
-
-        //     }
-        // }, 5500);
-    };
+    const abc = () => {
+        setTmpVariable(tmpVariable+1)
+        console.log(tmpVariable);
+    }
 
     return (
         <>
@@ -361,7 +368,7 @@ function LuckyWheelComponent() {
                                         {renderItemWheel()}
                                     </ul>
                                 </div>
-                                <a id="btn_spin" key="btn_spin" className={statusBtn} href="#"/>
+                                <button id="btn_spin" key="btn_spin" className={statusBtn} href="#" onClick={spin}> </button>
                             </div>
                         </div>
                     </div>
