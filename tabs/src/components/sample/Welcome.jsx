@@ -36,41 +36,42 @@ export function Welcome(props) {
   });
 
   return (
-    <div className="welcome page">
-      <div className="narrow page-padding">
-        <Image src="hello.png" />
-        <h1 className="center">Congratulations!</h1>
-        <p className="center">Your app is running in your {friendlyEnvironmentName}</p>
-        <p className="center">demo build team app</p>
-        <Menu defaultActiveIndex={0} items={items} underlined secondary />
-        <div className="sections">
-          {selectedMenuItem === "local" && (
-            <div>
-              <EditCode />
-              <AddSSO />
-            </div>
-          )}
-          {selectedMenuItem === "azure" && (
-            <div>
-              <Deploy />
-            </div>
-          )}
-          {selectedMenuItem === "publish" && (
-            <div>
-              <Publish />
-            </div>
-          )}
-          {selectedMenuItem === "demo" && (
-            <div>
-              <DemoComponent />
-            </div>
-          )}
-        </div>
-      </div>
+    // <div className="welcome page">
+    //   <div className="narrow page-padding">
+    //     <Image src="hello.png" />
+    //     <h1 className="center">Congratulations!</h1>
+    //     <p className="center">Your app is running in your {friendlyEnvironmentName}</p>
+    //     <p className="center">demo build team app</p>
+    //     <Menu defaultActiveIndex={0} items={items} underlined secondary />
+    //     <div className="sections">
+    //       {selectedMenuItem === "local" && (
+    //         <div>
+    //           <EditCode />
+    //           <AddSSO />
+    //         </div>
+    //       )}
+    //       {selectedMenuItem === "azure" && (
+    //         <div>
+    //           <Deploy />
+    //         </div>
+    //       )}
+    //       {selectedMenuItem === "publish" && (
+    //         <div>
+    //           <Publish />
+    //         </div>
+    //       )}
+    //       {selectedMenuItem === "demo" && (
+    //         <div>
+    //           <DemoComponent />
+    //         </div>
+    //       )}
+    //     </div>
+    //   </div>
 
 
-      {/* <DemoComponent /> */}
+    //   {/* <DemoComponent /> */}
 
-    </div>
+    // </div>
+    <DemoComponent />
   );
 }

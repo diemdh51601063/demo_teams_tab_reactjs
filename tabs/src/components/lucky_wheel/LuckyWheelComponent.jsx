@@ -2,19 +2,17 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import "../../assets/lucky_wheel/style.css";
+import "../../assets/lucky_wheel/result-content.css";
+import "../../assets/lucky_wheel/checkbox.css";
 import anh from "../../assets/images/anh.jpg";
 import anh2 from "../../assets/images/anh2.jpg";
+import RenderFirework from "../../assets/firework.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRotate } from '@fortawesome/free-solid-svg-icons'
 
 
 function LuckyWheelComponent() {
-    const [listData, setListData] = useState([]);
-    const [rotate, setRotate] = useState(0) // độ xoay
-    const [result, setResult] = useState(null); // kết quả sau 1 lần xoay
-    const [deg, setDeg] = useState(null);
-    const [statusBtn, setStatusBtn] = useState("wheel-btn");
-    const [reload, setReload] = useState(false);
-    const [numberWin, setNumberWin] = useState(4);
-    const [listCheckedItem, setListCheckedItem] = useState([
+    const [listData, setListData] = useState([
         {
             key: 1,
             text: "Sếp",
@@ -152,14 +150,23 @@ function LuckyWheelComponent() {
             name: "b-dung"
         }
     ]); //ds item được chọn)
+    const [rotate, setRotate] = useState(0) // độ xoay
+    const [result, setResult] = useState(null); // kết quả sau 1 lần xoay
+    const [deg, setDeg] = useState(null);
+    const [statusBtn, setStatusBtn] = useState("wheel-btn");
+    const [reload, setReload] = useState(false);
+    const [numberWin, setNumberWin] = useState(4);
+    const [listCheckedItem, setListCheckedItem] = useState([]); //ds item được chọn)
 
-    const [transform, setTransform] = useState("");
+    const [transform, setTransform] = useState("rotate(0deg)");
 
-    const [listResult, setListResult] = ([]);
+    const [listResult, setListResult] = useState([]);
 
-    const [tmpVariable, setTmpVariable] = useState(1);
+    const [isShowingListData, setIsShowingListData] = useState(true);
 
-    const [randomInd, setRandomIndex] = useState();
+    const [isCheckAll, setIsCheckAll] = useState(false);
+
+    const [displayListData, setDisplayListData] = useState("none");
 
     function getColor(index) {
         const listColor = [
@@ -214,13 +221,165 @@ function LuckyWheelComponent() {
     }
 
     useEffect(() => {
-        let random = randomIndex(listCheckedItem);
-        console.log(random);
         renderWheel();
-    })
+    }, [listCheckedItem])
+
+    //hàm tạo ra vòng xoay, dựng từ canvas
+    function renderWheel() {
+        let numOptions = listCheckedItem.length;
+        if (numOptions > 0) {
+            var rotateDeg = 360 / numOptions / 2 + 90;
+            var canvas = document.getElementById("wheel-canvas");
+            let x = canvas.width / 2;
+            let y = canvas.height / 2;
+
+            var ctx = canvas.getContext("2d");
+
+            let count = 0;
+            for (var i = 0; i < numOptions; i++) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.translate(x, y); // Center Point
+                ctx.moveTo(0, 0);
+                ctx.rotate((((360 / numOptions) * i - rotateDeg) * Math.PI) / 180);
+                ctx.arc(0, 0, 250, 0, (2 * Math.PI) / numOptions, false); // Radius
+
+                if (numOptions % 2 === 0) {
+                    if (count % 2 === 0) {
+                        ctx.fillStyle = "lime";
+                    } else {
+                        ctx.fillStyle = "#fb0775";
+                    }
+                } else {
+                    ctx.fillStyle = getColor(i);
+                }
+
+                ctx.fill();
+                ctx.lineWidth = 1;
+                if (numOptions > 1) {
+                    ctx.strokeStyle = "lightslategrey";
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+                count++;
+            }
+        }
+    }
+
+    function randomIndex() {
+        var randNum = 0;
+        let listCheckedItemLength = listCheckedItem.length;
+        let rand = Math.floor(Math.random() * listCheckedItemLength);
+        if (rand !== 0) {
+            randNum = rand;
+        }
+
+        if (listResult.length > 0) {
+            let pos = listResult.findIndex(data => data.key === listCheckedItem[randNum].key);
+            if (pos !== -1) {
+                console.log("trùng");
+                randNum = randomIndex();
+            }
+        }
+        return randNum;
+    };
+
+    function fnGetPrize(randomInd) {
+        if (randomInd == null) {
+            return;
+        }
+        let oldDeg = deg || 0;
+        let newDeg = oldDeg + (360 - (oldDeg % 360)) + (360 * 3 - randomInd * (360 / listCheckedItem.length));
+        setDeg(newDeg)
+        return newDeg;
+    };
+
+    function spin() {
+        let randomInd = randomIndex();
+        setTimeout(() => {
+            RenderFirework();
+            setResult(listCheckedItem[randomInd]);
+            setListResult(prev => [...prev, listCheckedItem[randomInd]]);
+        }, 5500);
+
+        let rotateWheel = fnGetPrize(randomInd);
+        setTransform("rotate(" + rotateWheel + "deg)")
+
+        //lừa => data chưa xuống kịp, listResult ở đây lúc nào cũng console ra mảng thiếu 1 phần tử
+        console.log(listResult);
+    };
+
+
+    function showListData() {
+        if (displayListData === "none") {
+            setDisplayListData("block");
+        } else {
+            setDisplayListData("none");
+        }
+    }
+
+    function setListChecked() {
+        let updatedList = [];
+        let ele = document.getElementsByName('chk');
+        if (isCheckAll === false) {
+            setDisplayListData("block");
+            setIsShowingListData(true);
+            setIsCheckAll(true);
+            for (let i = 0; i < ele.length; i++) {
+                if (ele[i].type === 'checkbox') {
+                    ele[i].checked = true;
+                    updatedList = [...updatedList, listData[i]];
+                }
+            }
+            setListCheckedItem(updatedList);
+        } else {
+            setIsShowingListData(false);
+            setIsCheckAll(false);
+            for (let j = 0; j < ele.length; j++) {
+                if (ele[j].type === 'checkbox') {
+                    ele[j].checked = false;
+                    listCheckedItem[j].checked = false;
+                }
+            }
+            setListCheckedItem([]);
+            clearWheelCanvas();
+        }
+        resetWheel();
+    }
+
+    const setItemChecked = (e) => {
+        var updatedList = [...listCheckedItem];
+        var posItem;
+
+        if (e.checked) {
+            posItem = updatedList.findIndex(i => i.text === listData[e.id].text);
+            listData[e.id].checked = true;
+            if (posItem < 0) {
+                updatedList = [...updatedList, listData[e.id]];
+            }
+        } else {
+            var pos = listData.findIndex(j => j.text === e.value);
+            listData[pos].checked = false;
+            posItem = updatedList.findIndex(i => i.text === e.value);
+            if (posItem >= 0) {
+                updatedList.splice(posItem, 1);
+            }
+        }
+        setListCheckedItem(updatedList);
+
+        if (updatedList.length === listData.length) {
+            setIsCheckAll(true);
+        } else {
+            setIsCheckAll(false);
+        }
+
+        clearWheelCanvas();
+        resetWheel();
+    }
 
     function renderItemWheel() {
-        if (listCheckedItem !== null) {
+        if (listCheckedItem.length > 0) {
             let turnNum = 1 / listCheckedItem.length;
 
             //Teams app auto debug = https (nếu dùng http thì sẽ bị lỗi)
@@ -230,10 +389,10 @@ function LuckyWheelComponent() {
                 <>
                     {listCheckedItem.map((itemChecked, index) => {
                         return (
-                            <li className="hc-luckywheel-item" key={"li_" + itemChecked.name} id={"li_" + index}>
+                            <li className="hc-luckywheel-item" key={"li_" + itemChecked.text} id={"li_" + index}>
                                 <span style={{ "transform": "rotate(" + index * turnNum + "turn)" }}>
                                     <div id={"curve_" + index} className="div-item-luckywheel">
-                                        <p className="text-normal"> {itemChecked.name}  </p>
+                                        <p className="text-normal"> {itemChecked.text}  </p>
                                     </div>
                                     {/* <img src={`https://i1-dulich.vnecdn.net/2021/05/18/VnExpress-MauSon-8-1621330133.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=wUopIcNjmFPsr1P75uQ1Ew`} alt="img" /> */}
 
@@ -251,113 +410,65 @@ function LuckyWheelComponent() {
         }
     }
 
-    //hàm tính độ xoay sao cho phần tử được chọn 
-    const fnGetPrize = (data_input) => {
-        if (data_input[0] == null && !data_input[1] == null) {
-            return;
-        }
-        let oldDeg = deg || 0;
-        let newDeg = oldDeg + (360 - (oldDeg % 360)) + (360 * 3 - data_input[0] * (360 / listCheckedItem.length));
-        setDeg(newDeg);
-        return newDeg;
-    };
-
-    //hàm tạo ra vòng xoay, dựng từ canvas
-    function renderWheel() {
-        let numOptions = listCheckedItem.length;
-        var rotateDeg = 360 / numOptions / 2 + 90;
+    const clearWheelCanvas = () => {
         var canvas = document.getElementById("wheel-canvas");
-        let x = canvas.width / 2;
-        let y = canvas.height / 2;
-
-        var ctx = canvas.getContext("2d");
-
-        let count = 0;
-        for (var i = 0; i < numOptions; i++) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.translate(x, y); // Center Point
-            ctx.moveTo(0, 0);
-            ctx.rotate((((360 / numOptions) * i - rotateDeg) * Math.PI) / 180);
-            ctx.arc(0, 0, 250, 0, (2 * Math.PI) / numOptions, false); // Radius
-
-            if (numOptions % 2 === 0) {
-                if (count % 2 === 0) {
-                    ctx.fillStyle = "lime";
-                } else {
-                    ctx.fillStyle = "#fb0775";
-                }
-            } else {
-                ctx.fillStyle = getColor(i);
-            }
-
-            ctx.fill();
-            ctx.lineWidth = 1;
-            if (numOptions > 1) {
-                ctx.strokeStyle = "lightslategrey";
-                ctx.stroke();
-            }
-
-            ctx.restore();
-            count++;
-        }
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    function spin() {
-        let randNum = 0;
-        let listCheckedItemLength = listCheckedItem.length;
-        let rand = Math.floor(Math.random() * listCheckedItemLength);
-        if (rand !== 0) {
-            randNum = rand;
-        }
+    const resetWheel = () => {
+        setResult(null);
+        setListResult([]);
+        document.getElementById("firework").innerHTML = "";
+    }
 
-        //let listResult = []
-        if (listResult !== undefined) {
-            let pos = listResult.findIndex(data => data.name === listCheckedItem[randNum].name);
-            if (pos !== -1) {
-                console.log("trùng");
-                randNum = randomIndex(listCheckedItem);
-            }
-        }
-        setRandomIndex(randNum);
-        console.log(randomInd);
-
-        //lúc gọi tạo randomIndex đang bị lặp rất nhiều lần, phải kiếm tra lại
-    };
-
-    function randomIndex() {
-        let randNum = 0;
-        let listCheckedItemLength = listCheckedItem.length;
-        let rand = Math.floor(Math.random() * listCheckedItemLength);
-        if (rand !== 0) {
-            randNum = rand;
-        }
-
-        //let listResult = []
-        if (listResult !== undefined) {
-            let pos = listResult.findIndex(data => data.name === listCheckedItem[randNum].name);
-            if (pos !== -1) {
-                console.log("trùng");
-                randNum = randomIndex(listCheckedItem);
-            }
-        }
-        setRandomIndex(randNum);
-        return randNum;
-    };
-
-    const abc = () => {
-        setTmpVariable(tmpVariable+1)
-        console.log(tmpVariable);
+    function renderListItem() {
+        return (
+            <>
+                {listData.length > 0 ?
+                    (<>
+                        <div className="checkbox-member" >
+                            <div className="check-all-flex-box" key="div_all">
+                                <div className="check-all" >
+                                    <input checked={isCheckAll} key="all_chkbox" type="checkbox" id="checkbox_all" name="checkbox_all" value="all" onChange={setListChecked} />
+                                    <label style={{ fontSize: "20px" }}>Tất cả</label>
+                                </div>
+                                <div className="check-all-arrow" id="check-all-arrow" key="arrow_list" onClick={showListData} >
+                                    {isShowingListData === false ? <>&#11167;</> : <>&#11165;</>}
+                                </div>
+                            </div>
+                            <div className="list-item" style={{ display: displayListData }} key="div_list_item" id="style-scroll-list-item" >
+                                {listData.map((item, key_index) => {
+                                    return (
+                                        <div className="item-of-list" key={"item_" + key_index}>
+                                            <input type="checkbox" key={"chkbox_item_" + key_index} id={key_index} name="chk" value={item.text} onChange={(e) => setItemChecked(e.target)} />
+                                            <label className="checkbox-label" key={"label_chkbox_item_" + key_index}>{item.text}</label>
+                                        </div>
+                                    );
+                                })
+                                }
+                            </div>
+                        </div>
+                    </>) : ""}
+            </>
+        )
     }
 
     return (
         <>
             <div className="bg-wheel container-fluid" key="wheel">
                 <div className="flex-box">
+
+                    <div className="checkbox-list">
+                        <div className="checkbox-item">
+                            {renderListItem()}
+                        </div>
+                    </div>
+
                     <div className="flex-box-center">
                         <div className="box-wheel">
                             <div className="hc-luckywheel" id="div-wheel">
-                                <div id="div-wheel-container" className="hc-luckywheel-container">
+                                <div id="div-wheel-container" className="hc-luckywheel-container" style={{ "transform": transform }}>
                                     <canvas className="hc-luckywheel-canvas"
                                         id="wheel-canvas"
                                         width="500"
@@ -368,10 +479,51 @@ function LuckyWheelComponent() {
                                         {renderItemWheel()}
                                     </ul>
                                 </div>
-                                <button id="btn_spin" key="btn_spin" className={statusBtn} href="#" onClick={spin}> </button>
+                                <button id="btn_spin" key="btn_spin" className={statusBtn} onClick={spin}> </button>
                             </div>
                         </div>
                     </div>
+
+                    <div className="box-result">
+                        <div id="firework" className="firework-container"></div>
+                        {(result === null ?
+                            "" :
+                            (
+                                <>
+                                    <FontAwesomeIcon icon={faRotate} className="reload" onClick={resetWheel} />
+                                    <div className="result-content" id="result-content">
+                                        <div className="row flex-result">
+                                            <h2 className="result-title">Kết Quả </h2>
+                                        </div>
+
+                                        <div className="display">
+                                            <div>
+                                                {result != null ?
+                                                    <span id="readout">
+                                                        WINNER: {"  "}
+                                                        <span key="result" id="result" className="cssanimation sequence fadeInBottom" >{result.text}</span>
+                                                    </span>
+                                                    : ""}
+                                            </div>
+                                            <hr></hr>
+                                            <div className="list-result">
+                                                {listResult != null ?
+                                                    listResult.map((data, key) => {
+                                                        return (
+                                                            <>
+                                                                <p key={data.text + key} className="cssanimation sequence fadeInBottom">{data.text}</p>
+                                                            </>
+                                                        );
+                                                    })
+                                                    : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        )}
+                    </div>
+
                 </div>
             </div>
         </>

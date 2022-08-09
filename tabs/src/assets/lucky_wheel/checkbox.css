@@ -1,0 +1,170 @@
+.checkbox-list {
+  position: relative;
+  margin: 180px auto;
+  font-family: "Poppins", sans-serif;
+  width: 20%;
+  display: flex;
+}
+
+.checkbox-item {
+  width: 80%;
+  text-align: left;
+  color: black;
+  padding: 5px;
+  margin: 0 auto;
+}
+
+.check-all {
+  display: flex;
+  align-items: center;
+  width: 70%;
+}
+
+.check-all-flex-box {
+  display: flex;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.check-all-arrow {
+  align-self: center;
+  width: 30%;
+  text-align: right;
+  font-size: 1.4em;
+}
+
+.list-item {
+  border-top: 0.5px solid gray;
+  height: 350px;
+  overflow-y: scroll;
+  display: none;
+  animation: expand 2s;
+  padding: 0 5px 10px 5px;
+  margin: 0 10px;
+}
+
+.item-of-list {
+  margin: 5px 0;
+  background-color: white;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.disabled-checkbox,
+.disabled-label {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+input[type="checkbox"] {
+  accent-color: rgb(235, 0, 70);
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+}
+
+@keyframes expand {
+  0% {
+    height: 0px;
+  }
+  100% {
+    height: 350px;
+  }
+}
+
+#style-scroll-list-item::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+}
+
+#style-scroll-list-item::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f5f5f5;
+}
+
+#style-scroll-list-item::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+
+.checkbox-member {
+  border-radius: 10px;
+  background: -moz-linear-gradient(
+    top,
+    rgba(31, 212, 167, 0.849) 0%,
+    rgba(95, 247, 128, 0.932) 25%,
+    rgba(74, 229, 250, 0.904) 50%,
+    rgba(248, 129, 108, 0.842) 75%,
+    rgba(245, 120, 147, 0.945) 100%
+  );
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0%, rgba(31, 212, 167, 0.849)),
+    color-stop(25%, rgba(95, 247, 128, 0.932)),
+    color-stop(50%, rgba(74, 229, 250, 0.904)),
+    color-stop(75%, rgba(248, 129, 108, 0.842)),
+    color-stop(100%, rgba(245, 120, 147, 0.945))
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(31, 212, 167, 0.849) 0%,
+    rgba(95, 247, 128, 0.932) 25%,
+    rgba(74, 229, 250, 0.904) 50%,
+    rgba(248, 129, 108, 0.842) 75%,
+    rgba(245, 120, 147, 0.945) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(31, 212, 167, 0.849) 0%,
+    rgba(95, 247, 128, 0.932) 25%,
+    rgba(74, 229, 250, 0.904) 50%,
+    rgba(248, 129, 108, 0.842) 75%,
+    rgba(245, 120, 147, 0.945) 100%
+  );
+  background-size: 100% 400%;
+  background-position: 0 0;
+  -webkit-animation: animateGradient 8s ease 1;
+  -moz-animation: animateGradient 8s ease 1;
+  animation: animateGradient 8s ease 1;
+  -webkit-animation-delay: 2s;
+  -moz-animation-delay: 2s;
+  animation-delay: 2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes animateGradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+@-moz-keyframes animateGradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+@keyframes animateGradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 0 100%;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}

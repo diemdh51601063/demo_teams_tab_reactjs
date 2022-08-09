@@ -10,8 +10,8 @@ const RenderFirework = () => {
       canvas.style.height = '100%';
       canvas.style.borderRadius = "10px";
       canvas.style.opacity = "0.8";
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight * 2;
+      canvas.width = canvas.clientWidth + 40;
+      canvas.height = (canvas.clientHeight * 2) + 130;
   
       let ctx = canvas.getContext('2d');
   

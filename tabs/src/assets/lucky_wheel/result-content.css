@@ -1,0 +1,197 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.box-result {
+    width: 20%;
+  margin: auto;
+  position: relative;
+  color: rgb(240, 248, 255);
+  background-color: rgba(0, 0, 0, 0.116);
+  display: flex;
+  vertical-align: middle;
+  border-radius: 15px;
+}
+
+.firework-container {
+  padding: 0;
+  margin: 0;
+}
+
+.result-content {
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  animation-name: rightToLeft;
+  animation-duration: 4.5s;
+  padding: 20px 10px;
+  position: absolute;
+}
+
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(50px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.cssanimation,
+.cssanimation span {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.cssanimation span {
+  display: inline-block;
+}
+
+.fadeInBottom {
+  animation-name: fadeInBottom;
+}
+@keyframes fadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.result-content p {
+  margin-top: 5px;
+  font-size: 1.3rem;
+}
+
+.btn-reset {
+  margin: 5px auto;
+  background-color: #016efd;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(2, 2, 2);
+  width: 80px;
+}
+
+.btn-reset:focus {
+  outline: none;
+}
+
+.btn-reset:hover {
+  background-color: rgb(0, 255, 76);
+  color: black;
+}
+
+#readout {
+  margin-top: 1px;
+  bottom: 2vh;
+  left: 35vw;
+}
+
+#result {
+  font-size: 50px;
+  color: rgb(37, 253, 48);
+}
+
+.flex-result {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.flex-result h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.show-result {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 30px;
+}
+
+.result-title {
+  color: hsla(0, 0%, 0%, 0.9);
+  font: normal 140px Varela Round, sans-serif;
+  left: 0;
+  letter-spacing: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+  color: black;
+  animation: move linear 2000ms infinite;
+  padding: 10px;
+}
+
+@keyframes move {
+  0% {
+    text-shadow: 4px -4px 0 rgb(240, 81, 107), 3px -3px 0 rgb(240, 81, 107),
+      2px -2px 0 rgb(240, 81, 107), 1px -1px 0 rgb(240, 81, 107),
+      -4px 4px 0 rgb(0, 255, 191), -3px 3px 0 rgb(0, 255, 191),
+      -2px 2px 0 rgb(0, 255, 191), -1px 1px 0 rgb(0, 255, 191);
+  }
+  20% {
+    text-shadow: -4px -4px 0 rgb(0, 255, 191), -3px -3px 0 rgb(0, 255, 191),
+      -2px -2px 0 rgb(0, 255, 191), -1px -1px 0 rgb(0, 255, 191),
+      4px 4px 0 rgb(240, 81, 107), 3px 3px 0 rgb(240, 81, 107),
+      2px 2px 0 rgb(240, 81, 107), 1px 1px 0 rgb(240, 81, 107);
+  }
+  40% {
+    text-shadow: -4px 4px 0 rgb(240, 81, 107), -3px 3px 0 rgb(240, 81, 107),
+      -2px 2px 0 rgb(240, 81, 107), -1px 1px 0 rgb(240, 81, 107),
+      4px -4px 0 rgb(0, 255, 191), 3px -3px 0 rgb(0, 255, 191),
+      2px -2px 0 rgb(0, 255, 191), 1px -1px 0 rgb(0, 255, 191);
+  }
+  60% {
+    text-shadow: 4px 4px 0 rgb(0, 255, 191), 3px 3px 0 rgb(0, 255, 191),
+      2px 2px 0 rgb(0, 255, 191), 1px 1px 0 rgb(0, 255, 191),
+      -4px -4px 0 rgb(240, 81, 107), -3px -3px 0 rgb(240, 81, 107),
+      -2px -2px 0 rgb(240, 81, 107), -1px -1px 0 rgb(240, 81, 107);
+  }
+  80% {
+    text-shadow: 4px -4px 0 rgb(240, 81, 107), 3px -3px 0 rgb(240, 81, 107),
+      2px -2px 0 rgb(240, 81, 107), 1px -1px 0 rgb(240, 81, 107),
+      -4px 4px 0 rgb(0, 255, 191), -3px 3px 0 rgb(0, 255, 191),
+      -2px 2px 0 rgb(0, 255, 191), -1px 1px 0 rgb(0, 255, 191);
+  }
+}
+
+.hightlight-result {
+  white-space: nowrap;
+  margin: auto;
+  width: 60px;
+  font-size: 15px;
+  border-radius: 10px;
+  color: snow;
+  background-color: black;
+  padding: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* height: 1.5rem; */
+}
+
+.text-normal {
+  white-space: nowrap;
+  margin: auto;
+  width: 60px;
+  padding: 6px;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* height: 1.5rem; */
+}
+
+.reload:hover {
+  color: snow;
+}
+
+.reload {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  color: black;
+  font-size: 20px;
+  z-index: 1;
+}
