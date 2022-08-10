@@ -1,39 +1,39 @@
 import React, { useState } from "react";
 import { Image, Menu } from "@fluentui/react-northstar";
 import "./Welcome.css";
-import { EditCode } from "./EditCode";
-import { Deploy } from "./Deploy";
-import { Publish } from "./Publish";
-import { AddSSO } from "./AddSSO";
+// import { EditCode } from "./EditCode";
+// import { Deploy } from "./Deploy";
+// import { Publish } from "./Publish";
+// import { AddSSO } from "./AddSSO";
 
 import DemoComponent from "../DemoComponent";
 
 export function Welcome(props) {
-  const { environment } = {
-    environment: window.location.hostname === "localhost" ? "local" : "azure",
-    ...props,
-  };
-  const friendlyEnvironmentName =
-    {
-      local: "local environment",
-      azure: "Azure environment",
-    }[environment] || "local environment";
+  // const { environment } = {
+  //   environment: window.location.hostname === "localhost" ? "local" : "azure",
+  //   ...props,
+  // };
+  // const friendlyEnvironmentName =
+  //   {
+  //     local: "local environment",
+  //     azure: "Azure environment",
+  //   }[environment] || "local environment";
 
-  const steps = ["local", "azure", "publish", "demo"];
-  const friendlyStepsName = {
-    local: "1. Build your app locally",
-    azure: "2. Provision and Deploy to the Cloud",
-    publish: "3. Publish to Teams",
-    demo: "4.Demo"
-  };
-  const [selectedMenuItem, setSelectedMenuItem] = useState("local");
-  const items = steps.map((step) => {
-    return {
-      key: step,
-      content: friendlyStepsName[step] || "",
-      onClick: () => setSelectedMenuItem(step),
-    };
-  });
+  // const steps = ["local", "azure", "publish", "demo"];
+  // const friendlyStepsName = {
+  //   local: "1. Build your app locally",
+  //   azure: "2. Provision and Deploy to the Cloud",
+  //   publish: "3. Publish to Teams",
+  //   demo: "4.Demo"
+  // };
+  // const [selectedMenuItem, setSelectedMenuItem] = useState("local");
+  // const items = steps.map((step) => {
+  //   return {
+  //     key: step,
+  //     content: friendlyStepsName[step] || "",
+  //     onClick: () => setSelectedMenuItem(step),
+  //   };
+  // });
 
   return (
     // <div className="welcome page">

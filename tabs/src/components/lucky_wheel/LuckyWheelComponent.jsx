@@ -150,12 +150,12 @@ function LuckyWheelComponent() {
             name: "b-dung"
         }
     ]); //ds item được chọn)
-    const [rotate, setRotate] = useState(0) // độ xoay
+    //const [rotate, setRotate] = useState(0) // độ xoay
     const [result, setResult] = useState(null); // kết quả sau 1 lần xoay
     const [deg, setDeg] = useState(null);
     const [statusBtn, setStatusBtn] = useState("wheel-btn");
-    const [reload, setReload] = useState(false);
-    const [numberWin, setNumberWin] = useState(4);
+    //const [reload, setReload] = useState(false);
+    //const [numberWin, setNumberWin] = useState(4);
     const [listCheckedItem, setListCheckedItem] = useState([]); //ds item được chọn)
 
     const [transform, setTransform] = useState("rotate(0deg)");
@@ -167,6 +167,8 @@ function LuckyWheelComponent() {
     const [isCheckAll, setIsCheckAll] = useState(false);
 
     const [displayListData, setDisplayListData] = useState("none");
+
+    const [disabledCheckbox, setDisabledCheckbox] = useState("");
 
     function getColor(index) {
         const listColor = [
@@ -181,50 +183,11 @@ function LuckyWheelComponent() {
         return listColor[ind];
     }
 
-    //hàm tạo ra vòng xoay, dựng từ canvas
-    function renderWheel() {
-        setRotate(0);
-        var numOptions = listCheckedItem.length;
-        var rotateDeg = 360 / numOptions / 2 + 90;
-        var canvas = document.getElementById("wheel-canvas");
-        var x = canvas.width / 2;
-        var y = canvas.height / 2;
-        var ctx = canvas.getContext("2d");
-        let count = 0;
-        for (var i = 0; i < numOptions; i++) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.translate(x, y);
-            ctx.moveTo(0, 0);
-            ctx.rotate((((360 / numOptions) * i - rotateDeg) * Math.PI) / 180);
-            ctx.arc(0, 0, 250, 0, (2 * Math.PI) / numOptions, false);
-
-            if (numOptions % 2 === 0) {
-                if (count % 2 === 0) {
-                    ctx.fillStyle = "lime";
-                } else {
-                    ctx.fillStyle = "#fb0775";
-                }
-            } else {
-                ctx.fillStyle = getColor(i);
-            }
-
-            ctx.fill();
-            ctx.lineWidth = 1;
-            if (numOptions > 1) {
-                ctx.strokeStyle = "lightslategrey";
-                ctx.stroke();
-            }
-            ctx.restore();
-            count++;
-        }
-    }
-
+    //useEffect(<function1 sẽ chạy sau khi file load xong >, <dependency => là 1 mảng bao gồm các biến mà function1 sẽ được render lại khi các biến đó thay đổi>)
     useEffect(() => {
         renderWheel();
     }, [listCheckedItem])
 
-    //hàm tạo ra vòng xoay, dựng từ canvas
     function renderWheel() {
         let numOptions = listCheckedItem.length;
         if (numOptions > 0) {
@@ -297,10 +260,15 @@ function LuckyWheelComponent() {
 
     function spin() {
         let randomInd = randomIndex();
+        setStatusBtn("wheel-btn disabled-link");
+        setDisabledCheckbox("disabled-checkbox");
+
         setTimeout(() => {
             RenderFirework();
             setResult(listCheckedItem[randomInd]);
             setListResult(prev => [...prev, listCheckedItem[randomInd]]);
+            setStatusBtn("wheel-btn");
+            setDisabledCheckbox("");
         }, 5500);
 
         let rotateWheel = fnGetPrize(randomInd);
@@ -309,7 +277,6 @@ function LuckyWheelComponent() {
         //lừa => data chưa xuống kịp, listResult ở đây lúc nào cũng console ra mảng thiếu 1 phần tử
         console.log(listResult);
     };
-
 
     function showListData() {
         if (displayListData === "none") {
@@ -383,7 +350,7 @@ function LuckyWheelComponent() {
             let turnNum = 1 / listCheckedItem.length;
 
             //Teams app auto debug = https (nếu dùng http thì sẽ bị lỗi)
-            let urlSrc = "http://192.168.20.27/files/photo/";
+            //let urlSrc = "http://192.168.20.27/files/photo/";
 
             return (
                 <>
@@ -396,7 +363,7 @@ function LuckyWheelComponent() {
                                     </div>
                                     {/* <img src={`https://i1-dulich.vnecdn.net/2021/05/18/VnExpress-MauSon-8-1621330133.jpg?w=1200&h=0&q=100&dpr=1&fit=crop&s=wUopIcNjmFPsr1P75uQ1Ew`} alt="img" /> */}
 
-                                    {(index % 2 == 0 ?
+                                    {(index % 2 === 0 ?
                                         <img src={anh} alt="img" />
                                         : <img src={anh2} alt="img" />
                                     )}
@@ -430,7 +397,7 @@ function LuckyWheelComponent() {
                         <div className="checkbox-member" >
                             <div className="check-all-flex-box" key="div_all">
                                 <div className="check-all" >
-                                    <input checked={isCheckAll} key="all_chkbox" type="checkbox" id="checkbox_all" name="checkbox_all" value="all" onChange={setListChecked} />
+                                    <input checked={isCheckAll} className={disabledCheckbox} key="all_chkbox" type="checkbox" id="checkbox_all" name="checkbox_all" value="all" onChange={setListChecked}  />
                                     <label style={{ fontSize: "20px" }}>Tất cả</label>
                                 </div>
                                 <div className="check-all-arrow" id="check-all-arrow" key="arrow_list" onClick={showListData} >
@@ -441,7 +408,7 @@ function LuckyWheelComponent() {
                                 {listData.map((item, key_index) => {
                                     return (
                                         <div className="item-of-list" key={"item_" + key_index}>
-                                            <input type="checkbox" key={"chkbox_item_" + key_index} id={key_index} name="chk" value={item.text} onChange={(e) => setItemChecked(e.target)} />
+                                            <input type="checkbox" className={disabledCheckbox} key={"chkbox_item_" + key_index} id={key_index} name="chk" value={item.text} onChange={(e) => setItemChecked(e.target)} />
                                             <label className="checkbox-label" key={"label_chkbox_item_" + key_index}>{item.text}</label>
                                         </div>
                                     );
@@ -484,7 +451,7 @@ function LuckyWheelComponent() {
                         </div>
                     </div>
 
-                    <div className="box-result">
+                    <div className="box-result" id="box-result-id">
                         <div id="firework" className="firework-container"></div>
                         {(result === null ?
                             "" :

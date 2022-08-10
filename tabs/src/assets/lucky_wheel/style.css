@@ -89,7 +89,6 @@ input {
 .flex-box-center {
   width: 60%;
   position: relative;
-  /* margin: auto; */
 }
 
 .box-wheel {
@@ -120,8 +119,8 @@ input {
 }
 .hc-luckywheel {
   position: relative;
-  width: 520px; /*Change this when change size*/
-  height: 520px; /*Change this when change size*/
+  width: 520px;
+  height: 520px;
   border-radius: 50%;
   border: 10px solid #fa489b;
   box-shadow: 0 2px 3px #333, 0 0 2px #000;
@@ -178,8 +177,8 @@ input {
   padding-top: 5px;
   margin: 0 auto;
   text-align: center;
-  -webkit-transform-origin: 50% 250px; /*Change this when change size*/
-  -ms-transform-origin: 50% 250px; /*Change this when change size*/
+  -webkit-transform-origin: 50% 250px;
+  -ms-transform-origin: 50% 250px;
   transform-origin: 50% 250px;
 }
 
