@@ -1,0 +1,130 @@
+#root {
+  margin-top: -20px;
+  height: 100%;
+}
+.login {
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.452);
+}
+.item-form {
+  padding-bottom: 15px;
+  width: 100%;
+  font-size: 20px;
+}
+.item-form input {
+  height: 20px;
+  width: 100%;
+  border-bottom: 1px solid rgb(170, 170, 170) !important;
+}
+
+.item-form select:hover {
+  border-bottom: 2px solid rgb(0, 0, 0) !important;
+}
+
+.item-form select:focus {
+  border-bottom: 2px solid rgb(17 155 215) !important;
+}
+
+.item-form label{
+  color: #777;
+  text-align: left;
+  font-size: 12px;
+}
+
+.item-form select {
+  width: 100%;
+  border: 0px;
+  outline: 0px;
+  font-size: 14px;
+  border-bottom: 1px solid rgb(170, 170, 170) !important;
+}
+
+.item-form button {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: rgb(17 155 215);
+  border: 1px solid rgb(17 155 215);
+  border-radius: 20px;
+}
+
+.item-form p {
+  margin: 5px 0;
+}
+
+.style-form {
+  width: 30%;
+  background-color: white;
+  border-radius: 5px;
+  margin: 100px auto;
+  padding: 50px;
+}
+
+.style-form h3 {
+  text-align: center;
+  font-size: 30px;
+  color: rgb(17 155 215);
+  font-weight: 800;
+  margin: auto;
+  padding-bottom: 20px;
+}
+
+.content {
+  font-size: 15px;
+}
+
+.content p {
+  text-align: center;
+}
+
+.label-before,
+.field input:valid + label::before,
+.field input:focus + label::before {
+  line-height: 20px;
+  font-size: 12px;
+  top: -10px;
+  background: #fff;
+  padding: 0;
+  left: 0;
+}
+.container {
+  width: 80%;
+  margin: 30px 10%;
+}
+.field {
+  position: relative;
+  margin-bottom: 15px;
+}
+.field label::before {
+  content: attr(title);
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: 40px;
+  font-size: 14px;
+  color: #777;
+  transition: 300ms all;
+}
+.field input {
+  width: 100%;
+  line-height: 40px;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-bottom: 1px solid rgb(170, 170, 170) !important;
+}
+
+.field input:focus {
+  outline: 0;
+  border-color: rgb(17 155 215);
+  border-bottom: 2px solid rgb(17 155 215) !important;
+}
+
+.field input:focus + label::before {
+  color: rgb(17 155 215);
+}
+
+.field input:hover {
+  border-bottom: 2px solid rgb(0, 0, 0) !important;
+}

@@ -8,6 +8,8 @@ import Tab from "./Tab";
 import "./App.css";
 import TabConfig from "./TabConfig";
 import { useTeams } from "msteams-react-base-component";
+import DemoComponent from "./DemoComponent";
+import LoginComponent from "./smoothfile/LoginComponent";
 
 /**
  * The main app which handles the initialization and routing
@@ -26,6 +28,8 @@ export default function App() {
           <Route exact path="/termsofuse" component={TermsOfUse} />
           <Route exact path="/tab" component={Tab} />
           <Route exact path="/config" component={TabConfig} />
+          <Route exact path="/demo" component={DemoComponent} />
+          <Route exact path="/login" component={LoginComponent} />
         </>
       </Router>
     </Provider>

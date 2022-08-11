@@ -1,0 +1,43 @@
+.smoothfile-login {
+  height: 100%;
+  position: relative;
+}
+
+.smoothfile-login h1 {
+    color: rgb(17 155 215);
+    font-size: 30px;
+}
+
+.smoothfile-div-center {
+  width: 100%;
+  margin: auto;
+  position: absolute;
+  top: 45%;
+  -ms-transform: translateY(-45%);
+  transform: translateY(-45%);
+}
+
+.smoothfile-test {
+  display: flex;
+  justify-content: center;
+}
+
+.smoothfile-btn-center {
+  margin: auto;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background-color: rgb(17 155 215);
+  border: 1px solid rgb(17 155 215);
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.smoothfile-btn-center-text {
+    vertical-align: middle;
+    margin-top: auto ;
+    margin-bottom: auto;
+    color: white;
+    text-decoration:none;
+}
+

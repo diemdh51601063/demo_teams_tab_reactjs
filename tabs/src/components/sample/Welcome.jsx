@@ -7,71 +7,53 @@ import "./Welcome.css";
 // import { AddSSO } from "./AddSSO";
 
 import DemoComponent from "../DemoComponent";
+import SmoothfileIndexComponent from "../smoothfile/SmoothfileIndexComponent";
 
 export function Welcome(props) {
-  // const { environment } = {
-  //   environment: window.location.hostname === "localhost" ? "local" : "azure",
-  //   ...props,
-  // };
-  // const friendlyEnvironmentName =
-  //   {
-  //     local: "local environment",
-  //     azure: "Azure environment",
-  //   }[environment] || "local environment";
+  const { environment } = {
+    environment: window.location.hostname === "localhost" ? "local" : "azure",
+    ...props,
+  };
+  const friendlyEnvironmentName =
+    {
+      local: "local environment",
+      azure: "Azure environment",
+    }[environment] || "local environment";
 
-  // const steps = ["local", "azure", "publish", "demo"];
-  // const friendlyStepsName = {
-  //   local: "1. Build your app locally",
-  //   azure: "2. Provision and Deploy to the Cloud",
-  //   publish: "3. Publish to Teams",
-  //   demo: "4.Demo"
-  // };
-  // const [selectedMenuItem, setSelectedMenuItem] = useState("local");
-  // const items = steps.map((step) => {
-  //   return {
-  //     key: step,
-  //     content: friendlyStepsName[step] || "",
-  //     onClick: () => setSelectedMenuItem(step),
-  //   };
-  // });
+  //const steps = ["local", "azure", "publish", "demo", "smoothfile"];
+  const steps = ["smoothfile", "demo"];
+
+  const friendlyStepsName = {
+    smoothfile: "1.Smoothfile",
+    demo: "2.Demo"
+  };
+  const [selectedMenuItem, setSelectedMenuItem] = useState("smoothfile");
+  const items = steps.map((step) => {
+    return {
+      key: step,
+      content: friendlyStepsName[step] || "",
+      onClick: () => setSelectedMenuItem(step),
+    };
+  });
 
   return (
-    // <div className="welcome page">
-    //   <div className="narrow page-padding">
-    //     <Image src="hello.png" />
-    //     <h1 className="center">Congratulations!</h1>
-    //     <p className="center">Your app is running in your {friendlyEnvironmentName}</p>
-    //     <p className="center">demo build team app</p>
-    //     <Menu defaultActiveIndex={0} items={items} underlined secondary />
-    //     <div className="sections">
-    //       {selectedMenuItem === "local" && (
-    //         <div>
-    //           <EditCode />
-    //           <AddSSO />
-    //         </div>
-    //       )}
-    //       {selectedMenuItem === "azure" && (
-    //         <div>
-    //           <Deploy />
-    //         </div>
-    //       )}
-    //       {selectedMenuItem === "publish" && (
-    //         <div>
-    //           <Publish />
-    //         </div>
-    //       )}
-    //       {selectedMenuItem === "demo" && (
-    //         <div>
-    //           <DemoComponent />
-    //         </div>
-    //       )}
-    //     </div>
-    //   </div>
+    <div className="welcome page">
+      {/* <Menu defaultActiveIndex={0} items={items} underlined secondary />
+      <div className="sections">
+        {selectedMenuItem === "demo" && (
+          <div>
+            <DemoComponent />
+          </div>
+        )}
 
+        {selectedMenuItem === "smoothfile" && (
+          <div>
+            <SmoothfileIndexComponent />
+          </div>
+        )}
+      </div> */}
+      <SmoothfileIndexComponent />
 
-    //   {/* <DemoComponent /> */}
-
-    // </div>
-    <DemoComponent />
+    </div>
   );
 }

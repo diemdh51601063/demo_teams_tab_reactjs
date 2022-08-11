@@ -183,7 +183,7 @@ function LuckyWheelComponent() {
         return listColor[ind];
     }
 
-    //useEffect(<function1 sẽ chạy sau khi file load xong >, <dependency => là 1 mảng bao gồm các biến mà function1 sẽ được render lại khi các biến đó thay đổi>)
+    //useEffect(<function1 sẽ chạy sau khi file load xong >, <dependency => là 1 mảng bao gồm các biến mà function1 sẽ được render lại khi các biến đó thay đổi> => điều kiện render thì đọc tài liệu)
     useEffect(() => {
         renderWheel();
     }, [listCheckedItem])
