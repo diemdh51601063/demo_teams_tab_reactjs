@@ -72,6 +72,16 @@
 
 .content {
   font-size: 15px;
+  color: #777;
+}
+
+.content a {
+  color: #777;
+  text-decoration: none;
+}
+
+.content a:hover{
+  color: rgb(17 155 215) ;
 }
 
 .content p {
