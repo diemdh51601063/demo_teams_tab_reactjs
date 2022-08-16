@@ -34,12 +34,9 @@ function LoginComponent() {
             }
         }).then(res => {
             if (res.status == 200) {
-                console.log(res.data.data);
                 const loginInfo = jwtDecode(res.data.data.access_token);
                 localStorage.setItem("token", res.data.data.access_token);
-                console.log(loginInfo);
                 history.push('/home');
-
             }
         }).catch(error => console.log(error));
     }
@@ -47,18 +44,20 @@ function LoginComponent() {
     return (
         <div className="login">
             <h1>Login Smoothfile Component</h1>
-            <form className="style-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className="style-form" onSubmit={handleSubmit(onSubmit)}> 
                 <h3>Login Smoothfile</h3>
                 <div className="field">
-                    <input type="text" required autoComplete="off" id="url" name="url" {...register("url", { required: true })} />
+                    <input type="text" required autoComplete="off" id="url" name="url" {...register("url", { required: true })} 
+                    value="https://asean-dev.smoothfile.jp/smoothfile6/admin/api/auth/login/02"
+                    />
                     <label htmlFor="url" title="URL *"></label>
                 </div>
                 <div className="field">
-                    <input type="text" required autoComplete="off" id="login_code" name="login_code" {...register("login_code", { required: true })} />
+                    <input type="text" required autoComplete="off" id="login_code" name="login_code" {...register("login_code", { required: true })} value="admin"/>
                     <label htmlFor="login_code" title="Login Code *"></label>
                 </div>
                 <div className="field">
-                    <input type="password" required autoComplete="off" id="password" name="password" {...register("password", { required: true })} />
+                    <input type="password" required autoComplete="off" id="password" name="password" {...register("password", { required: true })} value="n00t9jaV"/>
                     <label htmlFor="password" title="Password *"></label>
                 </div>
                 <div className="item-form">
