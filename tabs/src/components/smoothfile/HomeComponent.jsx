@@ -6,15 +6,51 @@ import { useEffect } from "react";
 import "../../assets/smoothfile/home.css";
 import { TreeView } from "devextreme-react";
 import { useCallback } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
+import DataTable from "react-data-table-component";
 
+
+
+// export const columns = [
+//     {
+//         name: "File Name",
+//         selector: "file_name",
+//         sortable: true
+//     },
+//     {
+//         name: "Size",
+//         selector: "file_size",
+//         sortable: true
+//     },
+//     {
+//         name: "Updated",
+//         selector: "update_date",
+//         sortable: true,
+//         // cell: d => <span>{d.genres.join(", ")}</span>
+//     },
+//     {
+//         name: "Actions",
+//         selector: "update_user",
+//         sortable: true
+//     },
+//     {
+//         name: "Details",
+//         selector: "comment",
+//         sortable: true
+//     }
+// ];
 
 function HomeComponent() {
 
     const [listProject, setListProject] = useState([]);
-    const [displaySubMenu, setDisplaySubMenu] = useState('sub-menu hide-menu');
     const [listTree, setListTree] = useState([]);
     const [currentItem, setCurrentItem] = useState();
     const [listFile, setListFile] = useState([]);
+    const [styleMenu, setStyleMenu] = useState("menu-project");
+    const [styleListFile, setStyleListFile] = useState("list-file");
 
     const selectItem = (e) => {
         setCurrentItem(e.itemData);
@@ -29,7 +65,6 @@ function HomeComponent() {
             }
         }).then(res => {
             if (res.status == 200) {
-                console.log(res.data.data);
                 setListFile(res.data.data);
             }
         }).catch(error => console.log(error));
@@ -47,7 +82,7 @@ function HomeComponent() {
         }).then(res => {
             if (res.status == 200) {
                 setListProject(res.data.data);
-                loadListProjectTest(res.data.data);
+                loadListProject(res.data.data);
             }
         }).catch(error => console.log(error));
     }
@@ -55,7 +90,17 @@ function HomeComponent() {
         getListProject();
     }, [])
 
-    function loadListProjectTest(list) {
+    function hideMenu() {
+        if (styleMenu == "menu-project") {
+            setStyleMenu("menu-project-hide");
+            setStyleListFile("list-file-full");
+        } else {
+            setStyleMenu("menu-project");
+            setStyleListFile("list-file");
+        }
+    }
+
+    function loadListProject(list) {
         let arr = [];
         list.forEach((project, id) => {
             let arrRootDir;
@@ -93,7 +138,6 @@ function HomeComponent() {
     }
 
     function showListProject() {
-        console.log(listTree);
         if (listTree.length > 0) {
             return (
                 <>
@@ -107,26 +151,93 @@ function HomeComponent() {
         }
     }
 
+    function formatDate(string) {
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(string).toLocaleDateString([], options);
+    }
+
+    // function renderTable() {
+    //     let test = listFile;
+    //     if (test.length > 0) {
+    //         const tableData = {
+    //             columns,
+    //             test
+    //         };
+    //         setDataInTable(tableData);
+    //         return (
+    //             <div className="main">
+    //                 <DataTableExtensions {...tableData}>
+    //                     <DataTable
+    //                         columns={columns}
+    //                         data={test}
+    //                         noHeader
+    //                         defaultSortField="id"
+    //                         defaultSortAsc={false}
+    //                         pagination
+    //                         highlightOnHover
+    //                     />
+    //                 </DataTableExtensions>
+    //             </div>
+    //         );
+    //     }
+    // }
+
+    const columns33 = [
+        {
+            name: 'Title',
+            selector: row => row.title,
+        },
+        {
+            name: 'Year',
+            selector: row => row.year,
+        },
+    ];
+
     return (
         <>
             <h1>Home Component</h1>
             <a href="/login">Back</a>
+            <div className="icon-menu-project">
+                <FontAwesomeIcon icon={faBars} className="icon-style" onClick={hideMenu} />
+                <FontAwesomeIcon icon={faCloudArrowUp} className="icon-style" />
+                <FontAwesomeIcon icon={faRightLeft} className="icon-style" />
+            </div>
+            {/* <MyComponent/> */}
             <div className="flex-box2">
-                <div className="menu-directory">
-                    {showListProject()}
+
+                <div className={styleMenu}>
+                    <div className="list-project">
+                        {showListProject()}
+                    </div>
                 </div>
-                <div className="list-file">
-                    {listFile.length > 0 ?
-                        listFile.map((file, ind) => {
-                            return (
-                                <>
-                                    <div>{file.file_name}</div>
-                                </>
-                            )
-                        })
-                        :
-                        ""
-                    }
+                <div className={styleListFile}>
+                    <table id="customers">
+                        <tr>
+                            <th>FileName</th>
+                            <th>Size</th>
+                            <th>Updated</th>
+                            <th>Actions</th>
+                            <th>Details</th>
+                        </tr>
+                        {listFile.length > 0 ?
+                            listFile.map((file, ind) => {
+                                return (
+                                    <>
+                                        <tr>
+                                            <td style={{ textAlign: "left" }}>{file.file_name}</td>
+                                            <td>{file.file_size}</td>
+                                            <td>{formatDate(file.update_date)}</td>
+                                            <td>Germany</td>
+                                            <td>Germany</td>
+                                        </tr>
+                                    </>
+                                )
+                            })
+
+                            :
+                            ""
+                        }
+                    </table>
                 </div>
             </div>
 
