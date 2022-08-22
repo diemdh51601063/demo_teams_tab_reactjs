@@ -5,70 +5,18 @@ import { useState } from "react";
 import { useEffect } from "react";
 import "../../assets/smoothfile/home.css";
 import { TreeView } from "devextreme-react";
-import { useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
-import DataTable from "react-data-table-component";
+import MaterialTable from "@material-table/core";
 
-
-
-// export const columns = [
-//     {
-//         name: "File Name",
-//         selector: "file_name",
-//         sortable: true
-//     },
-//     {
-//         name: "Size",
-//         selector: "file_size",
-//         sortable: true
-//     },
-//     {
-//         name: "Updated",
-//         selector: "update_date",
-//         sortable: true,
-//         // cell: d => <span>{d.genres.join(", ")}</span>
-//     },
-//     {
-//         name: "Actions",
-//         selector: "update_user",
-//         sortable: true
-//     },
-//     {
-//         name: "Details",
-//         selector: "comment",
-//         sortable: true
-//     }
-// ];
 
 function HomeComponent() {
-
-    const [listProject, setListProject] = useState([]);
     const [listTree, setListTree] = useState([]);
-    const [currentItem, setCurrentItem] = useState();
     const [listFile, setListFile] = useState([]);
     const [styleMenu, setStyleMenu] = useState("menu-project");
     const [styleListFile, setStyleListFile] = useState("list-file");
-
-    const selectItem = (e) => {
-        setCurrentItem(e.itemData);
-        let token = localStorage.getItem("token");
-        let loginInfo = jwtDecode(token);
-        let userId = loginInfo.data.user_id;
-        let directoryInfo = e.itemData;
-        axios.get(`https://asean-dev.smoothfile.jp/smoothfile6/admin/api/file/list/02?user_id=${userId}&directory_id=${directoryInfo.directory_id}&project_id=${directoryInfo.project_id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        }).then(res => {
-            if (res.status == 200) {
-                setListFile(res.data.data);
-            }
-        }).catch(error => console.log(error));
-    };
 
     function getListProject() {
         let token = localStorage.getItem("token");
@@ -80,18 +28,35 @@ function HomeComponent() {
                 'Authorization': `Bearer ${token}`
             }
         }).then(res => {
-            if (res.status == 200) {
-                setListProject(res.data.data);
+            if (res.status === 200) {
                 loadListProject(res.data.data);
             }
         }).catch(error => console.log(error));
     }
+
     useEffect(() => {
         getListProject();
     }, [])
 
+    const selectItem = (e) => {
+        let token = localStorage.getItem("token");
+        let loginInfo = jwtDecode(token);
+        let userId = loginInfo.data.user_id;
+        let directoryInfo = e.itemData;
+        axios.get(`https://asean-dev.smoothfile.jp/smoothfile6/admin/api/file/list/02?user_id=${userId}&directory_id=${directoryInfo.directory_id}&project_id=${directoryInfo.project_id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                setListFile(res.data.data);
+            }
+        }).catch(error => console.log(error));
+    };
+
     function hideMenu() {
-        if (styleMenu == "menu-project") {
+        if (styleMenu === "menu-project") {
             setStyleMenu("menu-project-hide");
             setStyleListFile("list-file-full");
         } else {
@@ -104,7 +69,6 @@ function HomeComponent() {
         let arr = [];
         list.forEach((project, id) => {
             let arrRootDir;
-            let j = 0;
             if (project.directoriesList.length > 0) {
                 project.directoriesList.forEach((directory, key) => {
                     if (directory.parent_directory_id === "00000000") {
@@ -112,13 +76,11 @@ function HomeComponent() {
                         arrRootDir.text = directory.directory_name;
                         arrRootDir.id = "1_" + (id + 1);
                         arrRootDir.items = setListChild(arrRootDir.id, directory.directory_id, project.directoriesList, project.project_id);
-                        j++;
                     }
                 });
                 arr.push(arrRootDir);
             }
         })
-        setCurrentItem(arr[0]);
         setListTree(arr);
     }
 
@@ -156,42 +118,13 @@ function HomeComponent() {
         return new Date(string).toLocaleDateString([], options);
     }
 
-    // function renderTable() {
-    //     let test = listFile;
-    //     if (test.length > 0) {
-    //         const tableData = {
-    //             columns,
-    //             test
-    //         };
-    //         setDataInTable(tableData);
-    //         return (
-    //             <div className="main">
-    //                 <DataTableExtensions {...tableData}>
-    //                     <DataTable
-    //                         columns={columns}
-    //                         data={test}
-    //                         noHeader
-    //                         defaultSortField="id"
-    //                         defaultSortAsc={false}
-    //                         pagination
-    //                         highlightOnHover
-    //                     />
-    //                 </DataTableExtensions>
-    //             </div>
-    //         );
-    //     }
-    // }
-
-    const columns33 = [
-        {
-            name: 'Title',
-            selector: row => row.title,
-        },
-        {
-            name: 'Year',
-            selector: row => row.year,
-        },
-    ];
+    const columns = [
+        { title: "File Name", field: "file_name" },
+        { title: "Size", field: "file_size" },
+        { title: "Updated", field: "update_date" },
+        { title: "File Name", field: "file_name" },
+        { title: "File Name", field: "file_name" },
+    ]
 
     return (
         <>
@@ -202,16 +135,15 @@ function HomeComponent() {
                 <FontAwesomeIcon icon={faCloudArrowUp} className="icon-style" />
                 <FontAwesomeIcon icon={faRightLeft} className="icon-style" />
             </div>
-            {/* <MyComponent/> */}
             <div className="flex-box2">
-
                 <div className={styleMenu}>
                     <div className="list-project">
                         {showListProject()}
                     </div>
                 </div>
+
                 <div className={styleListFile}>
-                    <table id="customers">
+                    {/* <table id="customers">
                         <tr>
                             <th>FileName</th>
                             <th>Size</th>
@@ -227,8 +159,8 @@ function HomeComponent() {
                                             <td style={{ textAlign: "left" }}>{file.file_name}</td>
                                             <td>{file.file_size}</td>
                                             <td>{formatDate(file.update_date)}</td>
-                                            <td>Germany</td>
-                                            <td>Germany</td>
+                                            <td></td>
+                                            <td></td>
                                         </tr>
                                     </>
                                 )
@@ -237,10 +169,15 @@ function HomeComponent() {
                             :
                             ""
                         }
-                    </table>
-                </div>
-            </div>
+                    </table> */}
 
+
+
+                    {/* <MaterialTable columns={columns} data={listFile} /> */}
+
+                </div>
+
+            </div>
         </>
     )
 }
