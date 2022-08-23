@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useEffect } from "react";
 
+
 function LoginComponent() {
 
     const [listLdap, setListLdap] = useState();
@@ -36,7 +37,7 @@ function LoginComponent() {
             if (res.status == 200) {
                 const loginInfo = jwtDecode(res.data.data.access_token);
                 localStorage.setItem("token", res.data.data.access_token);
-                history.push('/home');
+                history.push('/test');
             }
         }).catch(error => console.log(error));
     }

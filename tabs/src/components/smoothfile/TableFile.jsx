@@ -1,33 +1,28 @@
-// import { DataGrid } from "devextreme-react";
-import React from "react";
-import { useEffect } from "react";
-import MaterialTable from "@material-table/core";
 
 
-function TableFile(props) {
-   // console.log(props.listFile);
-    //const listFile = props.listFile;
 
-    const columns = [
-        { title: "File Name", field: "file_name" },
-        { title: "Size", field: "file_size" },
-        { title: "Updated", field: "update_date" },
-        { title: "File Name", field: "file_name" },
-        { title: "File Name", field: "file_name" },
-    ]
 
-    return (
-        <>
-            {/* <DataGrid
-                rows={listFile}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-            /> */}
-            <MaterialTable columns={columns} data={[]} />
-        </>
-    )
-}
+import { useContext } from "react";
+import UserContext from "./context/UserContext";
 
-export default TableFile;
+const data = [
+    { name: "Mohammad", surname: "Faisal", birthYear: 1995 },
+    { name: "Nayeem Raihan ", surname: "Shuvo", birthYear: 1994 },
+];
+
+const columns = [
+    { title: "Name", field: "name" },
+    { title: "Surname", field: "surname" },
+    { title: "Birth Year", field: "birthYear", type: "numeric" },
+];
+
+export const BasicTable = () => {
+
+    const test = useContext(UserContext);
+    console.log(test);
+
+    // return <MaterialTable title="Basic Table" columns={columns} data={data} />;
+
+    return (<h1>jjjjjjjjjjjj</h1>)
+};
+

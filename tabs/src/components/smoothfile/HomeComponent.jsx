@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import "../../assets/smoothfile/home.css";
@@ -9,7 +9,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
-import MaterialTable from "@material-table/core";
+import { UserProvider } from "./context/UserContext";
+
+
+import { BasicTable } from "./TableFile";
 
 
 function HomeComponent() {
@@ -17,6 +20,22 @@ function HomeComponent() {
     const [listFile, setListFile] = useState([]);
     const [styleMenu, setStyleMenu] = useState("menu-project");
     const [styleListFile, setStyleListFile] = useState("list-file");
+
+    const listTest = [
+        {
+            "file_id": "00000176",
+            "directory_id": "00000001",
+            "file_name": "00000988_p (1).jpg",
+            "file_size": 330.7,
+            "comment": "abc",
+            "allow_download_flag": 1,
+            "checkout_user": null,
+            "update_user": "Administrator",
+            "update_date": "2022/08/19 11:45:42",
+            "download_times": 0,
+            "other_download_times": 0
+        }
+    ]
 
     function getListProject() {
         let token = localStorage.getItem("token");
@@ -118,18 +137,36 @@ function HomeComponent() {
         return new Date(string).toLocaleDateString([], options);
     }
 
-    const columns = [
-        { title: "File Name", field: "file_name" },
-        { title: "Size", field: "file_size" },
-        { title: "Updated", field: "update_date" },
-        { title: "File Name", field: "file_name" },
-        { title: "File Name", field: "file_name" },
-    ]
+    function returnTable() {
+        if (listFile.length > 0) {
+            return (
+                <>
+                    {
+                        listFile.map((file, ind) => {
+                            return (
+                                <>
+                                    <tr>
+                                        <td style={{ textAlign: "left" }}>{file.file_name}</td>
+                                        <td>{file.file_size}</td>
+                                        <td>{formatDate(file.update_date)}</td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </>
+                            )
+                        })
+                    }
+                </>
+            )
+        }
+    }
 
     return (
         <>
             <h1>Home Component</h1>
-            <a href="/login">Back</a>
+            <a href="/login" style={{ marginRight: "10px" }}>Back</a>
+            <a href="/table">Table</a>
+
             <div className="icon-menu-project">
                 <FontAwesomeIcon icon={faBars} className="icon-style" onClick={hideMenu} />
                 <FontAwesomeIcon icon={faCloudArrowUp} className="icon-style" />
@@ -143,7 +180,7 @@ function HomeComponent() {
                 </div>
 
                 <div className={styleListFile}>
-                    {/* <table id="customers">
+                    <table id="customers">
                         <tr>
                             <th>FileName</th>
                             <th>Size</th>
@@ -151,34 +188,21 @@ function HomeComponent() {
                             <th>Actions</th>
                             <th>Details</th>
                         </tr>
-                        {listFile.length > 0 ?
-                            listFile.map((file, ind) => {
-                                return (
-                                    <>
-                                        <tr>
-                                            <td style={{ textAlign: "left" }}>{file.file_name}</td>
-                                            <td>{file.file_size}</td>
-                                            <td>{formatDate(file.update_date)}</td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </>
-                                )
-                            })
 
-                            :
-                            ""
-                        }
-                    </table> */}
+                        {returnTable()}
 
-
-
-                    {/* <MaterialTable columns={columns} data={listFile} /> */}
+                    </table>
 
                 </div>
-
+            </div>
+            <div>
+                <UserProvider value={listTest} >
+                    {/*có thể truyền nhiều biến và phương thức cập nhật của biến dó vd: <FoodContext.Provider value={{ name, location, setName, setLocation }}> */}
+                    <BasicTable />
+                </UserProvider>
             </div>
         </>
     )
 }
 export default HomeComponent;
+
