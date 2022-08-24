@@ -36,6 +36,7 @@ function DemoComponent() {
                 {tmpVariable}
             </div> */}
             <LuckyWheelComponent />
+
         </>
     )
 }

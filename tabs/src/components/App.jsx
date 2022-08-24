@@ -22,10 +22,10 @@ export default function App() {
   return (
       <Provider theme={theme || teamsTheme} styles={{ backgroundColor: "#eeeeee" }}>
         <Router>
-          <Route exact path="/">
+          {/* <Route exact path="/">
             <Redirect to="/tab" />
           </Route>
-          <>
+          <> */}
             <Route exact path="/privacy" component={Privacy} />
             <Route exact path="/termsofuse" component={TermsOfUse} />
             <Route exact path="/tab" component={Tab} />
@@ -33,9 +33,7 @@ export default function App() {
             <Route exact path="/demo" component={DemoComponent} />
             <Route exact path="/login" component={LoginComponent} />
             <Route exact path="/home" component={HomeComponent} />
-            <Route exact path="/test" component={TestComponent} />
-
-          </>
+          {/* </> */}
         </Router>
       </Provider>
   );

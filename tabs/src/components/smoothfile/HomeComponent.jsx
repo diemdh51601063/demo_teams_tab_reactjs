@@ -10,9 +10,9 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
 import { UserProvider } from "./context/UserContext";
-
-
+import TestComponent from "./TestComponent";
 import { BasicTable } from "./TableFile";
+import { Link, useHistory } from "react-router-dom";
 
 
 function HomeComponent() {
@@ -20,6 +20,8 @@ function HomeComponent() {
     const [listFile, setListFile] = useState([]);
     const [styleMenu, setStyleMenu] = useState("menu-project");
     const [styleListFile, setStyleListFile] = useState("list-file");
+
+    const history = useHistory();
 
     const listTest = [
         {
@@ -70,6 +72,8 @@ function HomeComponent() {
         }).then(res => {
             if (res.status === 200) {
                 setListFile(res.data.data);
+            } else if (res.status === 401) {
+                history.push('/login');
             }
         }).catch(error => console.log(error));
     };
@@ -164,8 +168,9 @@ function HomeComponent() {
     return (
         <>
             <h1>Home Component</h1>
-            <a href="/login" style={{ marginRight: "10px" }}>Back</a>
-            <a href="/table">Table</a>
+            <Link to="/login" style={{ marginRight: "10px" }}> Back </Link>
+            <Link to="/demo" style={{ marginRight: "10px" }}> Demo </Link>
+
 
             <div className="icon-menu-project">
                 <FontAwesomeIcon icon={faBars} className="icon-style" onClick={hideMenu} />
@@ -180,7 +185,7 @@ function HomeComponent() {
                 </div>
 
                 <div className={styleListFile}>
-                    <table id="customers">
+                    {/* <table id="customers">
                         <tr>
                             <th>FileName</th>
                             <th>Size</th>
@@ -191,8 +196,9 @@ function HomeComponent() {
 
                         {returnTable()}
 
-                    </table>
-
+                    </table> */}
+                    
+                    <TestComponent listFile = {listFile} />
                 </div>
             </div>
             <div>

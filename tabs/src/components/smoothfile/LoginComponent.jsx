@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import "../../assets/smoothfile/login.css";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+// import jwtDecode from "jwt-decode";
 import { useEffect } from "react";
 
 
@@ -12,8 +12,7 @@ function LoginComponent() {
     const [listLdap, setListLdap] = useState();
 
     const { register,
-        handleSubmit,
-        formState: { errors }
+        handleSubmit
     } = useForm();
     const history = useHistory();
     useEffect(() => {
@@ -22,7 +21,7 @@ function LoginComponent() {
 
     async function getLDAPList() {
         await axios.get(`https://asean-dev.smoothfile.jp/smoothfile6/admin/api/auth/get-ldap-list/02`).then(res => {
-            if (res.status == 200) {
+            if (res.status === 200) {
                 setListLdap(res.data.data)
             }
         }).catch(error => console.log(error));
@@ -34,10 +33,10 @@ function LoginComponent() {
                 'Content-Type': 'application/json'
             }
         }).then(res => {
-            if (res.status == 200) {
-                const loginInfo = jwtDecode(res.data.data.access_token);
+            if (res.status === 200) {
+                //const loginInfo = jwtDecode(res.data.data.access_token);
                 localStorage.setItem("token", res.data.data.access_token);
-                history.push('/test');
+                history.push('/home');
             }
         }).catch(error => console.log(error));
     }

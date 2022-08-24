@@ -1,0 +1,11 @@
+.MuiGrid-spacing-xs-2 {
+    width: 100% !important;
+    margin: auto !important;
+}
+
+.style-icon-file {
+    font-size: 50px;
+    color: rgb(76, 199, 76);
+    text-align: center;
+    margin: auto;
+}
