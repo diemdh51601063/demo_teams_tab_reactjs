@@ -12,7 +12,7 @@ import DemoComponent from "./DemoComponent";
 import LoginComponent from "./smoothfile/LoginComponent";
 import HomeComponent from "./smoothfile/HomeComponent";
 
-import TestComponent from "./smoothfile/TestComponent";
+import TestComponent from "./smoothfile/TableComponent";
 /**
  * The main app which handles the initialization and routing
  * of the app.

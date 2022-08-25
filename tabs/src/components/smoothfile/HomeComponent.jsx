@@ -9,35 +9,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
+import { faGrip } from "@fortawesome/free-solid-svg-icons";
+import { faList } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { UserProvider } from "./context/UserContext";
-import TestComponent from "./TestComponent";
+import TableComponent from "./TableComponent";
 import { BasicTable } from "./TableFile";
 import { Link, useHistory } from "react-router-dom";
 
 
 function HomeComponent() {
+    const history = useHistory();
+
     const [listTree, setListTree] = useState([]);
     const [listFile, setListFile] = useState([]);
     const [styleMenu, setStyleMenu] = useState("menu-project");
     const [styleListFile, setStyleListFile] = useState("list-file");
-
-    const history = useHistory();
-
-    const listTest = [
-        {
-            "file_id": "00000176",
-            "directory_id": "00000001",
-            "file_name": "00000988_p (1).jpg",
-            "file_size": 330.7,
-            "comment": "abc",
-            "allow_download_flag": 1,
-            "checkout_user": null,
-            "update_user": "Administrator",
-            "update_date": "2022/08/19 11:45:42",
-            "download_times": 0,
-            "other_download_times": 0
-        }
-    ]
+    const [typeDisplay, setTypeDisplay] = useState('list');
 
     function getListProject() {
         let token = localStorage.getItem("token");
@@ -51,6 +39,21 @@ function HomeComponent() {
         }).then(res => {
             if (res.status === 200) {
                 loadListProject(res.data.data);
+
+                let projectInit = res.data.data[0];
+
+                axios.get(`https://asean-dev.smoothfile.jp/smoothfile6/admin/api/file/list/02?user_id=${userId}&directory_id=00000001&project_id=${projectInit.project_id}`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(resFile => {
+                    if (resFile.status === 200) {
+                        setListFile(resFile.data.data);
+                    }
+                }).catch(error => console.log(error));
+            } else if (res.status === 401) {
+                history.push('/login');
             }
         }).catch(error => console.log(error));
     }
@@ -136,32 +139,11 @@ function HomeComponent() {
         }
     }
 
-    function formatDate(string) {
-        var options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(string).toLocaleDateString([], options);
-    }
-
-    function returnTable() {
-        if (listFile.length > 0) {
-            return (
-                <>
-                    {
-                        listFile.map((file, ind) => {
-                            return (
-                                <>
-                                    <tr>
-                                        <td style={{ textAlign: "left" }}>{file.file_name}</td>
-                                        <td>{file.file_size}</td>
-                                        <td>{formatDate(file.update_date)}</td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </>
-                            )
-                        })
-                    }
-                </>
-            )
+    function changeTypeDisplay() {
+        if (typeDisplay === 'list') {
+            setTypeDisplay('grid')
+        } else {
+            setTypeDisplay('list')
         }
     }
 
@@ -171,11 +153,30 @@ function HomeComponent() {
             <Link to="/login" style={{ marginRight: "10px" }}> Back </Link>
             <Link to="/demo" style={{ marginRight: "10px" }}> Demo </Link>
 
+            <div className="top-menu-project">
+                <div className="top-menu-left">
+                    <FontAwesomeIcon icon={faBars} className="icon-style" onClick={hideMenu} />
+                    <FontAwesomeIcon icon={faCloudArrowUp} className="icon-style" />
+                    <FontAwesomeIcon icon={faRightLeft} className="icon-style" />
+                </div>
+                <div className='top-menu-right'>
 
-            <div className="icon-menu-project">
-                <FontAwesomeIcon icon={faBars} className="icon-style" onClick={hideMenu} />
-                <FontAwesomeIcon icon={faCloudArrowUp} className="icon-style" />
-                <FontAwesomeIcon icon={faRightLeft} className="icon-style" />
+                    <div className="form-search">
+                        <form>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className="icon-search" />
+                            <input type="text" name="search" placeholder="Search.." />
+                        </form>
+                    </div>
+
+
+                    {typeDisplay === "list"
+                        ?
+                        <FontAwesomeIcon icon={faGrip} onClick={changeTypeDisplay} />
+                        :
+                        <FontAwesomeIcon icon={faList} onClick={changeTypeDisplay} />
+                    }
+
+                </div>
             </div>
             <div className="flex-box2">
                 <div className={styleMenu}>
@@ -185,28 +186,19 @@ function HomeComponent() {
                 </div>
 
                 <div className={styleListFile}>
-                    {/* <table id="customers">
-                        <tr>
-                            <th>FileName</th>
-                            <th>Size</th>
-                            <th>Updated</th>
-                            <th>Actions</th>
-                            <th>Details</th>
-                        </tr>
-
-                        {returnTable()}
-
-                    </table> */}
-                    
-                    <TestComponent listFile = {listFile} />
+                    {listFile.length > 0
+                        ?
+                        <TableComponent listFile={listFile} typeDisplay={typeDisplay} />
+                        : ""
+                    }
                 </div>
             </div>
-            <div>
+            {/* <div>
                 <UserProvider value={listTest} >
                     {/*có thể truyền nhiều biến và phương thức cập nhật của biến dó vd: <FoodContext.Provider value={{ name, location, setName, setLocation }}> */}
-                    <BasicTable />
+            {/*<BasicTable />
                 </UserProvider>
-            </div>
+            </div> */}
         </>
     )
 }

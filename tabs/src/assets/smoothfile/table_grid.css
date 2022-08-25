@@ -1,11 +1,88 @@
 .MuiGrid-spacing-xs-2 {
-    width: 100% !important;
-    margin: auto !important;
+  width: 100% !important;
+  margin: auto !important;
+}
+
+.style-icon-image {
+  font-size: 30px;
+  color: rgb(76, 199, 76);
+  text-align: center;
+  margin: auto;
+}
+
+.style-icon-word {
+  font-size: 30px;
+  color: rgb(0, 76, 216);
+  text-align: center;
+  margin: auto;
+}
+
+.style-icon-excel {
+  font-size: 30px;
+  color: rgb(2, 121, 71);
+  text-align: center;
+  margin: auto;
+}
+
+.style-icon-pptx {
+  font-size: 30px;
+  color: rgb(207, 54, 54);
+  text-align: center;
+  margin: auto;
+}
+
+.style-icon-pdf {
+  font-size: 30px;
+  color: rgb(190, 10, 85);
+  text-align: center;
+  margin: auto;
+}
+
+.style-icon-zip {
+  font-size: 30px;
+  color: rgb(134, 134, 134);
+  text-align: center;
+  margin: auto;
 }
 
 .style-icon-file {
-    font-size: 50px;
-    color: rgb(76, 199, 76);
-    text-align: center;
-    margin: auto;
+  font-size: 30px;
+  color: rgb(19, 19, 19);
+  text-align: center;
+  margin: auto;
+}
+
+.text-hidden {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-item-table-list {
+  padding-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+.item-grid {
+  padding: 20px;
+  height: 200px;
+  text-align: center;
+}
+
+.icon-in-grid {
+  font-size: 50px;
+}
+
+.footer-item-grid {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-footer {
+  font-size: 20px;
+  color: #337ab7;
 }

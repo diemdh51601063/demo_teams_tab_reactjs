@@ -19,13 +19,40 @@
   margin-left: 5px;
 }
 
-.icon-menu-project {
+.top-menu-project {
   padding: 10px;
   font-size: 20px;
   color: #337ab7;
   border-bottom: 1px solid rgb(167, 167, 167);
+  display: flex;
+  justify-content: space-between;
 }
 
+.top-menu-right {
+  display: flex;
+  justify-content: space-between;
+}
+
+.top-menu-right form {
+  margin-bottom: 0;
+  margin-right: 10px;
+  border-bottom: 1px solid rgb(167, 167, 167);
+}
+
+.top-menu-right input {
+  font-size: 15px;
+  border: none;
+  vertical-align: super;
+}
+
+.top-menu-right input:focus {
+  outline: 0;
+}
+
+.icon-search {
+  margin: 5px 5px;
+}
+ 
 .icon-style {
   margin-right: 30px;
 }

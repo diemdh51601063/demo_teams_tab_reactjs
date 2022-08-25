@@ -18,7 +18,13 @@ import { TableHead } from '@material-ui/core';
 import "../../assets/smoothfile/table_grid.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImage } from '@fortawesome/fontawesome-free-regular';
-
+import { faFilePdf } from '@fortawesome/fontawesome-free-regular';
+import { faFileWord } from '@fortawesome/fontawesome-free-regular';
+import { faFileExcel } from '@fortawesome/fontawesome-free-regular';
+import { faFile } from '@fortawesome/fontawesome-free-regular';
+import { faFileZipper } from '@fortawesome/free-solid-svg-icons';
+import { faFilePowerpoint } from '@fortawesome/fontawesome-free-regular';
+import { faRectangleList } from '@fortawesome/free-solid-svg-icons';
 import { Grid } from '@material-ui/core';
 
 
@@ -91,24 +97,12 @@ const useStyles2 = makeStyles({
 });
 
 
-//grid view
-function GridItem({ classes }) {
-    return (
-        // From 0 to 600px wide (smart-phones), I take up 12 columns, or the whole device width!
-        // From 600-690px wide (tablets), I take up 6 out of 12 columns, so 2 columns fit the screen.
-        // From 960px wide and above, I take up 25% of the device (3/12), so 4 columns fit the screen.
-        <Grid item xs={12} sm={6} md={3}>
-            <Paper className={classes.paper}>item</Paper>
-        </Grid>
-    );
-}
-
-
-export default function TestComponent(props) {
+export default function TableComponent(props) {
     const rows = props.listFile.sort((a, b) => (a.file_size < b.file_size ? -1 : 1));
     const classes = useStyles2();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+    // const [typeDisplay, setTypeDisplay] = useState('list');
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -121,50 +115,116 @@ export default function TestComponent(props) {
         setPage(0);
     };
 
-    return (
-        <>
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="custom pagination table">
-                    {/* <TableHead>
+
+    function returnIcon(fileName) {
+        var fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1, fileName.length);
+        switch (fileExtension) {
+            case 'pdf':
+                return <FontAwesomeIcon className="style-icon-pdf" icon={faFilePdf} />
+            case 'doc':
+                return <FontAwesomeIcon className="style-icon-word" icon={faFileWord} />
+            case 'png':
+            case 'jpg':
+                return <FontAwesomeIcon className="style-icon-image" icon={faFileImage} />
+            case 'csv':
+            case 'xlsx':
+            case 'xls':
+                return <FontAwesomeIcon className="style-icon-excel" icon={faFileExcel} />
+            case 'pptx':
+                return <FontAwesomeIcon className="style-icon-pptx" icon={faFilePowerpoint} />
+            case 'zip':
+                return <FontAwesomeIcon className="style-icon-zip" icon={faFileZipper} />
+            default:
+                return <FontAwesomeIcon className="style-icon-file" icon={faFile} />
+        }
+    }
+
+    function formatDate(string) {
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(string).toLocaleDateString([], options);
+    }
+
+    function showTableBody() {
+        if (props.typeDisplay === 'list') {
+            return (
+                <>
+                    <TableHead>
                         <TableRow>
-                            <TableCell align="right">File Name</TableCell>
-                            <TableCell align="right">Size</TableCell>
-                            <TableCell align="right">Updated</TableCell>
-                            <TableCell align="right">Actions</TableCell>
-                            <TableCell align="right">Details</TableCell>
+                            <TableCell align="left"><strong>File Name</strong></TableCell>
+                            <TableCell align="right"><strong>Size</strong></TableCell>
+                            <TableCell align="right"><strong>Updated</strong></TableCell>
+                            <TableCell align="center"><strong>Actions</strong></TableCell>
+                            <TableCell align="center"><strong>Details</strong></TableCell>
                         </TableRow>
-                    </TableHead> */}
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : rows
+                        ).map((row, key) => (
+                            <TableRow key={key}>
+                                <TableCell align="left">
+                                    {returnIcon(row.file_name)}
+                                    <span className='text-item-table-list'>{row.file_name}</span>
+                                </TableCell>
+                                <TableCell align="right">{row.file_size}</TableCell>
+                                <TableCell align="right">{formatDate(row.update_date)} <br /> by {row.update_user}</TableCell>
+                                <TableCell align="center">...</TableCell>
+                                <TableCell align="center"> <FontAwesomeIcon icon={faRectangleList} className="icon-footer" /></TableCell>
+                            </TableRow>
+                        ))}
+
+                        {emptyRows > 0 && (
+                            <TableRow style={{ height: 53 * emptyRows }} />
+                        )}
+                    </TableBody>
+                </>
+            )
+        } else {
+            return (
+                <>
                     <TableBody>
                         <Grid container spacing={2}>
                             {(rowsPerPage > 0
                                 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : rows
                             ).map((row) => (
-                                // <TableRow key={row.name}>
-                                //     <TableCell align="right">{row.file_name}</TableCell>
-                                //     <TableCell align="right">{row.file_size}</TableCell>
-                                //     <TableCell align="right">{row.update_date}</TableCell>
-                                //     <TableCell align="right">...</TableCell>
-                                //     <TableCell align="right">...</TableCell>
-                                // </TableRow>
-                                // <GridItem classes={classes} />
                                 <Grid item xs={12} sm={6} md={3}>
                                     <Paper className={classes}>
-                                        <div>
-                                            <FontAwesomeIcon className="style-icon-file" icon={faFileImage} />
+                                        <div className='item-grid'>
+                                            <div className='icon-in-grid'>
+                                                {returnIcon(row.file_name)}
+                                            </div>
+                                            <p className='text-hidden'><strong>{row.file_name}</strong></p>
+                                            <span>{formatDate(row.update_date)} by {row.update_user}</span>
+                                            <div className='footer-item-grid'>
+                                                <span>{row.file_size}</span>
+                                                {/* <span> */}
+                                                <FontAwesomeIcon icon={faRectangleList} className="icon-footer" />
+                                                {/* </span> */}
+                                            </div>
                                         </div>
-                                        <h2>{row.file_name}</h2>
                                     </Paper>
                                 </Grid>
                             ))}
 
                             {emptyRows > 0 && (
-                                <TableRow style={{ height: 53 * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
+                                <TableRow style={{ height: 53 * emptyRows }} />
                             )}
                         </Grid>
                     </TableBody>
+                </>
+            )
+        }
+    }
+
+    return (
+        <>
+            <TableContainer>
+                <Table className={classes.table} aria-label="custom pagination table">
+
+                    {showTableBody()}
+
                     <TableFooter>
                         <TableRow>
                             <TablePagination
@@ -186,7 +246,6 @@ export default function TestComponent(props) {
                     </TableFooter>
                 </Table>
             </TableContainer>
-
         </>
     );
 }
