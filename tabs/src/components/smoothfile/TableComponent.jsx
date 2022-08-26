@@ -151,7 +151,7 @@ export default function TableComponent(props) {
                     <TableHead>
                         <TableRow>
                             <TableCell align="left"><strong>File Name</strong></TableCell>
-                            <TableCell align="right"><strong>Size</strong></TableCell>
+                            <TableCell align="center"><strong>Size</strong></TableCell>
                             <TableCell align="right"><strong>Updated</strong></TableCell>
                             <TableCell align="center"><strong>Actions</strong></TableCell>
                             <TableCell align="center"><strong>Details</strong></TableCell>
@@ -167,7 +167,7 @@ export default function TableComponent(props) {
                                     {returnIcon(row.file_name)}
                                     <span className='text-item-table-list'>{row.file_name}</span>
                                 </TableCell>
-                                <TableCell align="right">{row.file_size}</TableCell>
+                                <TableCell align="center">{row.file_size}</TableCell>
                                 <TableCell align="right">{formatDate(row.update_date)} <br /> by {row.update_user}</TableCell>
                                 <TableCell align="center">...</TableCell>
                                 <TableCell align="center"> <FontAwesomeIcon icon={faRectangleList} className="icon-footer" /></TableCell>
@@ -199,9 +199,7 @@ export default function TableComponent(props) {
                                             <span>{formatDate(row.update_date)} by {row.update_user}</span>
                                             <div className='footer-item-grid'>
                                                 <span>{row.file_size}</span>
-                                                {/* <span> */}
                                                 <FontAwesomeIcon icon={faRectangleList} className="icon-footer" />
-                                                {/* </span> */}
                                             </div>
                                         </div>
                                     </Paper>

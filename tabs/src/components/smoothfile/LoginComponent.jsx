@@ -34,7 +34,6 @@ function LoginComponent() {
             }
         }).then(res => {
             if (res.status === 200) {
-                //const loginInfo = jwtDecode(res.data.data.access_token);
                 localStorage.setItem("token", res.data.data.access_token);
                 history.push('/home');
             }

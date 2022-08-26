@@ -1,6 +1,8 @@
 .flex-box2 {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  z-index: 1;
 }
 
 .menu-project {
@@ -33,7 +35,7 @@
   justify-content: space-between;
 }
 
-.top-menu-right form {
+.div-form-search {
   margin-bottom: 0;
   margin-right: 10px;
   border-bottom: 1px solid rgb(167, 167, 167);
@@ -110,4 +112,36 @@
   100% {
     transform: translateX(-160px);
   }
+}
+
+.list-result-search {
+  position: relative;
+  z-index: 999;
+  right: 0;
+  top: -8px;
+}
+
+.layer-list {
+  position: absolute;
+  right: 35px;
+  background-color: white;
+  width: 20%;
+  border-radius: 10px;
+  border: 1px solid rgb(199, 199, 199);
+}
+
+.title-result-search{
+  border-bottom: 2px solid #337ab7;
+  padding: 10px;
+}
+.result-search {
+  padding: 10px;
+  overflow-y: scroll;
+  max-height: 250px;
+}
+
+.result-search p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

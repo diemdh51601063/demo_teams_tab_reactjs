@@ -13,19 +13,19 @@ import { faGrip } from "@fortawesome/free-solid-svg-icons";
 import { faList } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { UserProvider } from "./context/UserContext";
-import TableComponent from "./TableComponent";
 import { BasicTable } from "./TableFile";
+import TableComponent from "./TableComponent";
 import { Link, useHistory } from "react-router-dom";
 
 
 function HomeComponent() {
     const history = useHistory();
-
     const [listTree, setListTree] = useState([]);
     const [listFile, setListFile] = useState([]);
     const [styleMenu, setStyleMenu] = useState("menu-project");
     const [styleListFile, setStyleListFile] = useState("list-file");
     const [typeDisplay, setTypeDisplay] = useState('list');
+    const [listSearchResult, setListSearchResult] = useState([]);
 
     function getListProject() {
         let token = localStorage.getItem("token");
@@ -55,7 +55,10 @@ function HomeComponent() {
             } else if (res.status === 401) {
                 history.push('/login');
             }
-        }).catch(error => console.log(error));
+        }).catch(error => {
+            history.push('/login');
+            console.log(error)
+        });
     }
 
     useEffect(() => {
@@ -147,6 +150,30 @@ function HomeComponent() {
         }
     }
 
+    function searchFile(e) {
+        if (e.target.value.length >= 3) {
+            let token = localStorage.getItem("token");
+            let loginInfo = jwtDecode(token);
+            let data = {
+                'type': 1,
+                'user_id': loginInfo.data.user_id,
+                'file_name': e.target.value,
+                'page': 0
+            }
+            axios.post(`https://asean-dev.smoothfile.jp/smoothfile6/admin/api/file/search/02`, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then(res => {
+                if (res.status === 200) {
+                    console.log(res.data.data);
+                    setListSearchResult(res.data.data.result);
+                }
+            }).catch(error => console.log(error));
+        }
+    }
+
     return (
         <>
             <h1>Home Component</h1>
@@ -162,10 +189,15 @@ function HomeComponent() {
                 <div className='top-menu-right'>
 
                     <div className="form-search">
-                        <form>
+                        <div className="div-form-search">
                             <FontAwesomeIcon icon={faMagnifyingGlass} className="icon-search" />
-                            <input type="text" name="search" placeholder="Search.." />
-                        </form>
+                            <input type="text" name="search" placeholder="Search..." onChange={searchFile} />
+                        </div>
+
+                        <div>
+
+                        </div>
+
                     </div>
 
 
@@ -178,6 +210,26 @@ function HomeComponent() {
 
                 </div>
             </div>
+            {(listSearchResult.length > 0) ?
+                <>
+                    <div className="list-result-search" >
+                        <div className="layer-list">
+                            <div className="title-result-search">
+                                Search Result
+                            </div>
+                            <div className="result-search">
+                                {listSearchResult.map((data, key) => {
+                                    return (
+                                        <p key={key}>{data.file_name}</p>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </div>
+                </>
+                :
+                ""
+            }
             <div className="flex-box2">
                 <div className={styleMenu}>
                     <div className="list-project">
