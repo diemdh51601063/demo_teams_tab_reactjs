@@ -26,6 +26,8 @@ function HomeComponent() {
     const [styleListFile, setStyleListFile] = useState("list-file");
     const [typeDisplay, setTypeDisplay] = useState('list');
     const [listSearchResult, setListSearchResult] = useState([]);
+    const [displayListResult, setDisplayListResult] = useState('display-result-search-none');
+    const [isLoading, setIsLoading] = useState(false);
 
     function getListProject() {
         let token = localStorage.getItem("token");
@@ -148,9 +150,18 @@ function HomeComponent() {
         } else {
             setTypeDisplay('list')
         }
+        setListSearchResult([]);
+        setDisplayListResult("display-result-search-none");
     }
 
     function searchFile(e) {
+        setIsLoading(true);
+        setListSearchResult([]);
+        if (e.target.value.length >= 3) {
+            setDisplayListResult("display-result-search-block");
+        } else {
+            setDisplayListResult("display-result-search-none");
+        }
         if (e.target.value.length >= 3) {
             let token = localStorage.getItem("token");
             let loginInfo = jwtDecode(token);
@@ -167,7 +178,7 @@ function HomeComponent() {
                 }
             }).then(res => {
                 if (res.status === 200) {
-                    console.log(res.data.data);
+                    setIsLoading(false);
                     setListSearchResult(res.data.data.result);
                 }
             }).catch(error => console.log(error));
@@ -191,7 +202,7 @@ function HomeComponent() {
                     <div className="form-search">
                         <div className="div-form-search">
                             <FontAwesomeIcon icon={faMagnifyingGlass} className="icon-search" />
-                            <input type="text" name="search" placeholder="Search..." onChange={searchFile} />
+                            <input type="text" name="search" placeholder="Search..." onChange={searchFile} autocomplete="off" />
                         </div>
 
                         <div>
@@ -210,26 +221,36 @@ function HomeComponent() {
 
                 </div>
             </div>
-            {(listSearchResult.length > 0) ?
-                <>
-                    <div className="list-result-search" >
-                        <div className="layer-list">
-                            <div className="title-result-search">
-                                Search Result
-                            </div>
-                            <div className="result-search">
-                                {listSearchResult.map((data, key) => {
-                                    return (
-                                        <p key={key}>{data.file_name}</p>
-                                    )
-                                })}
-                            </div>
+
+            <div className={displayListResult}>
+                <div className="list-result-search" >
+                    <div className="layer-list">
+                        <div className="title-result-search">
+                            Search Result
                         </div>
+
+                        {isLoading === true ?
+                            <div className="spinner-container">
+                                <div className="loading-spinner">
+                                </div>
+                            </div>
+                            :
+                            <div className="result-search">
+                                {(listSearchResult.length > 0) ?
+                                    <>
+                                        {listSearchResult.map((data, key) => {
+                                            return (
+                                                <p key={key}>{data.file_name}</p>
+                                            )
+                                        })}</>
+                                    :
+                                    <h4>No result</h4>
+                                }
+                            </div>
+                        }
                     </div>
-                </>
-                :
-                ""
-            }
+                </div>
+            </div>
             <div className="flex-box2">
                 <div className={styleMenu}>
                     <div className="list-project">
